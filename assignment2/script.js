@@ -26,6 +26,7 @@ var cityLondon = document.getElementById("city_london");
 var sameCity = document.getElementById("same_city");
 var firstjson = document.getElementById("firstAPI");
 var secondjson = document.getElementById("secondAPI");
+var thirdjson = document.getElementById("thirdAPI");
 
 for (let index = 0; index < dummyData.length; index++) {
   names.innerHTML += dummyData[index]["name"] + "<br/>";
@@ -74,7 +75,7 @@ fetch("https://jsonplaceholder.typicode.com/posts")
 fetch("https://fakestoreapi.com/products")
   .then((response) => response.json())
   .then((json) => {
-    function sortProductName(title) {
+    function sortAscendingProductName(title) {
       return function (a, b) {
         if (a[title] > b[title]) {
           return 1;
@@ -85,7 +86,7 @@ fetch("https://fakestoreapi.com/products")
       };
     }
 
-    json.sort(sortProductName("title"));
+    json.sort(sortAscendingProductName("title"));
 
     for (let index = 0; index < json.length; index++) {
       if (json[index]["price"] > 100) {
@@ -99,3 +100,32 @@ fetch("https://fakestoreapi.com/products")
       }
     }
   });
+
+fetch("https://api.thecatapi.com/v1/breeds").then((response) =>
+  response.json().then((json) => {
+    function sortdescendingCatName(name) {
+      return function (a, b) {
+        if (a[name] < b[name]) {
+          return 1;
+        } else if (a[name] > b[name]) {
+          return -1;
+        }
+        return 0;
+      };
+    }
+
+    json.sort(sortdescendingCatName("name"));
+
+    for (let index = 0; index < json.length; index++) {
+      if (json[index]["country_codes"] == "US") {
+        thirdjson.innerHTML +=
+          "Cat Name: " +
+          json[index]["name"] +
+          "<br/>" +
+          "Country Codes: " +
+          json[index]["country_codes"] +
+          "<br/> <br/>";
+      }
+    }
+  })
+);
